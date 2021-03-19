@@ -61,29 +61,49 @@
 
           <div class="inputs">
             <p>Выберите R:</p>
+            <!--            <div class="row">-->
+            <!--              <label class="text-label">-->
+            <!--                <input id="input-r" class="text-input" type="number" step="0.1" name="r" placeholder="[-3; 5]" maxlength="14" v-model="r"/>-->
+            <!--              </label>-->
+            <!--            </div>-->
             <div class="row">
-              <label class="text-label">
-                <input id="input-r" class="text-input" type="number" step="0.1" name="r" placeholder="[-3; 5]" maxlength="14" v-model="r"/>
-              </label>
+              <span class="row" v-for="rValue in rValues" :key="rValue.id">
+                <label>{{ rValue.r }}</label>
+                <input type="checkbox" v-model="rVal" :value="rValue.r"/>
+              </span>
+
+              <!--              <p>User's selected roels</p>-->
+              <!--              {{rVal}}-->
             </div>
 
             <p>Выберите Х:</p>
             <div class="row">
               <label class="text-label">
-                <input id="input-x" class="text-input" type="text" name="x" placeholder="[-5; 3]" maxlength="14" v-model="x"/>
+                <input id="input-x" class="text-input" type="text" name="x" placeholder="[-5; 3]" maxlength="14"
+                       v-model="x"/>
               </label>
             </div>
 
             <p>Выберите Y:</p>
+<!--            <div class="row">-->
+<!--              <label class="text-label">-->
+<!--                <input id="input-y" class="text-input" type="text" name="y" placeholder="[-3; 5]" maxlength="14"-->
+<!--                       v-model="y"/>-->
+<!--              </label>-->
+<!--            </div>-->
             <div class="row">
-              <label class="text-label">
-                <input id="input-y" class="text-input" type="text" name="y" placeholder="[-3; 5]" maxlength="14" v-model="y"/>
-              </label>
+              <span class="row" v-for="xValue in xValues" :key="xValue.id">
+                <label>{{ xValue.x }}</label>
+                <input type="checkbox" v-model="xVal" :value="xValue.x"/>
+              </span>
+
+              <!--              <p>User's selected roels</p>-->
+              <!--              {{xVal}}-->
             </div>
           </div>
           <div class="special-button">
             <button id="submit-button" @click="validateForm" type="submit">Отправить на проверку</button>
-            <button id="remove-button" @click="deleteDots" >Удалить все точки</button>
+            <button id="remove-button" @click="deleteDots">Удалить все точки</button>
           </div>
 
           <div class="special-button">
@@ -129,193 +149,319 @@ export default {
   components: {
     Button,
   },
-  data(){
+  data() {
     return {
-      x: "",
+      rValues: [
+        {
+          id: 1,
+          r: -2,
+        },
+        {
+          id: 2,
+          r: -1.5,
+        },
+        {
+          id: 3,
+          r: -1,
+        },
+        {
+          id: 4,
+          r: -0.5,
+        },
+        {
+          id: 5,
+          r: 0,
+        },
+        {
+          id: 6,
+          r: 0.5,
+        },
+        {
+          id: 7,
+          r: 1,
+        },
+        {
+          id: 8,
+          r: 1.5,
+        },
+        {
+          id: 9,
+          r: 2,
+        }
+      ],
+      xValues: [
+        {
+          id: 1,
+          x: -2,
+        },
+        {
+          id: 2,
+          x: -1.5,
+        },
+        {
+          id: 3,
+          x: -1,
+        },
+        {
+          id: 4,
+          x: -0.5,
+        },
+        {
+          id: 5,
+          x: 0,
+        },
+        {
+          id: 6,
+          x: 0.5,
+        },
+        {
+          id: 7,
+          x: 1,
+        },
+        {
+          id: 8,
+          x: 1.5,
+        },
+        {
+          id: 9,
+          x: 2,
+        }
+      ],
       y: "",
-      r: "5", // максимальный размер графика
-      xGraph: "", // Х из графика
-      yGraph: "", // Y из графика
+      xVal: [],
+      rVal: [],
       dots: new Array(0), // Список всех точек пользователя
     }
   },
   watch: {
 
-    x(val){
+    x(val) {
       this.validateInput(-5, 3, 'input-x', val);
     },
-    y(val){
-      this.validateInput(-5, 3, 'input-y', val);
+    y(val) {
+      this.validateInput(-3, 3, 'input-y', val);
     },
-    r(val){
-      if(this.validateInput(-3, 5, 'input-r', val)) {
-        let r = parseFloat(this.r);
-        let circle = document.getElementById("circle");
-        let rectangle = document.getElementById("rectangle");
-        let triangle = document.getElementById("triangle");
-        circle.setAttribute("d", `M ${150 - 20 * r} 150 A ${r * 20} ${r * 20}, 90, 0, 0, 150 ${150 + 20 * r} L 150 150 Z`);
-        rectangle.setAttribute("points", `${150 + 20 * r},${150 - 10 * r} ${150 + 20 * r},150 150,150 150,${150 - 10 * r}`);
-        triangle.setAttribute("points", `150,150 ${150 + 20 * r},150 150,${150 + 10 * r}`);
-        this.drawDots();}
-
+    rVal(val) {
+      let r;
+      if (this.rVal.length === 1) r = val[0]*2.5;
+      else r = 2*2.5;
+      let circle = document.getElementById("circle");
+      let rectangle = document.getElementById("rectangle");
+      let triangle = document.getElementById("triangle");
+      circle.setAttribute("d", `M ${150 - 20 * r} 150 A ${r * 20} ${r * 20}, 90, 0, 0, 150 ${150 + 20 * r} L 150 150 Z`);
+      rectangle.setAttribute("points", `${150 + 20 * r},${150 - 10 * r} ${150 + 20 * r},150 150,150 150,${150 - 10 * r}`);
+      triangle.setAttribute("points", `150,150 ${150 + 20 * r},150 150,${150 + 10 * r}`);
+      this.drawDots();
     }
-  },
-  methods: {
-    // Взаимодействие с формой и графиком
-    addDots(x, y){
-      this.$axios.put("http://localhost:8890/api/point",
-          {x: x, y: y, r: this.r},
-          {headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")}
-      }).then(() => {
-        this.loadDots();
-        this.$notify({
-          group: 'success',
-          title: 'Добавление точки',
-          text: 'Успешно',
-          type: 'success'
-        });
-      }).catch(() => {
-        this.AxiosErrorHandler("Точку не удалось добавить")
-      });
-    },
+  }
+,
 
-
-    deleteDots(){
-      this.$axios.delete("http://localhost:8890/api/point",
-          {headers: {Authorization: "Bearer " + localStorage.getItem("jwt")}
-      }).then(() => {
-        this.loadDots();
-        this.$notify({
-          group: 'success',
-          title: 'Удаление точек',
-          text: 'Успешно',
-          type: 'success'
-        });
-      }).catch(() => {
-        this.AxiosErrorHandler("Точки не удалось удалить");
-      });
-    },
-    logout(){
+methods: {
+  // Взаимодействие с формой и графиком
+  addDots(points)
+  {
+    this.$axios.put("http://localhost:8890/api/point",
+        {points: points},
+        {
+          headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")}
+        }).then(() => {
+      this.loadDots();
       this.$notify({
         group: 'success',
-        title: 'Выход из аккаунта',
+        title: 'Добавление точки',
         text: 'Успешно',
         type: 'success'
       });
-      this.$router.push({name: "auth-page"}, () => localStorage.clear());
-    },
-
-    // Загрузка и прорисовка точек на графике
-    loadDots(){
-      this.$axios.get("http://localhost:8890/api/point", {
-        headers: {Authorization: "Bearer " + localStorage.getItem("jwt")}
-      }).then(response => {
-        this.dots = response.data;
-        this.drawDots();
-      }).catch(() => {
-        this.AxiosErrorHandler("Точки не удалось загрузить");
-      });
-    },
-    drawDots(){
-      let r = parseFloat(this.r);
-      let svg = document.getElementById("graph")
-      let oldDots = document.querySelectorAll("circle");
-      oldDots.forEach(oldDot => oldDot.parentNode.removeChild(oldDot));
-
-      if(this.dots.length !== 0){
-        this.dots.forEach(dot => {
-          let newDot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-          newDot.setAttribute("id", "target-dot");
-          newDot.setAttribute("r", "4.5");
-          if (r >= 0) {
-            newDot.setAttribute("cx", `${dot.x / dot.r / dot.r * r * 100 + 150}`);
-            newDot.setAttribute("cy", `${150 - dot.y / dot.r / dot.r * r * 100}`);
-            newDot.setAttribute("fill", dot.result === true ? "green" : "red");
-          } else {
-            newDot.setAttribute("cx", `${(-1.8 * dot.x) / dot.r / dot.r * r * 100 + 150}`);
-            newDot.setAttribute("cy", `${150 - (-1.8 * dot.y) / dot.r / dot.r * r * 100}`);
-            newDot.setAttribute("fill", dot.result === true ? "green" : "red");
-          }
-          svg.appendChild(newDot);
-        })
-      }
-    },
-
-    // Различные виды валидации
-    validateForm(){
-      if ((this.x >= -5 && this.x <= 3) &&
-          (this.y >= -3 && this.y <= 5) &&
-          (this.r >= -3 && this.r <= 5) &&
-          (!isNaN(this.x) && !isNaN(this.y) && !isNaN(this.r)) &&
-          (this.x.trim() !== '' && this.y.trim() !== '' && this.r.trim() !== '')){
-        this.addDots(this.x, this.y);
-      } else {
-        this.AxiosErrorHandler("Проверте введенные данные");
-      }
-    },
-
-    valY(){
-      document.querySelector('input[class="y"]').change(function(){
-        document.getElementById("input-y").value= document.getElementsByClassName("y").value
-        console.log(document.getElementsByClassName("y").value)
-        console.log(document.getElementById("input-y").value)
-      });
-    },
-    validateFromGraph(){
-      let position = getMousePosition(document.getElementById("graph"), event);
-      this.xGraph = ((position.x - 150) / 100 * this.r).toFixed(2);
-      this.yGraph = ((150 - position.y) / 100 * this.r).toFixed(2);
-      if (this.r >= -3 && this.r <= 5) {
-        this.addDots(this.xGraph, this.yGraph);
-      } else {
-        this.AxiosErrorHandler("Проверьте значение R");
-      }
-      function getMousePosition(element, event) {
-        let rect = element.getBoundingClientRect();
-        return {
-          x: event.clientX - rect.left,
-          y: event.clientY - rect.top
-        };
-      }
-    },
-    validateInput(firstNumber, secondNumber, className, val){
-      let element = document.getElementById(className);
-      let buttonSubmit = document.getElementById("submit-button")
-      if (parseFloat(val) < firstNumber || parseFloat(val) > secondNumber || isNaN(val)){
-        element.classList.add("red");
-        element.setAttribute("style", "color: red");
-        buttonSubmit.setAttribute("disabled", "true");
-        console.log(buttonSubmit)
-        return false;
-      } else {
-        element.classList.remove("red");
-        element.removeAttribute("style");
-        buttonSubmit.removeAttribute("disabled");
-        return true;
-      }
-    },
+    }).catch(() => {
+      this.AxiosErrorHandler("Точку не удалось добавить")
+    });
+  }
+,
 
 
-
-    // Вывод сообщений ошибок
-    AxiosErrorHandler(errorText){
+  deleteDots()
+  {
+    this.$axios.delete("http://localhost:8890/api/point",
+        {
+          headers: {Authorization: "Bearer " + localStorage.getItem("jwt")}
+        }).then(() => {
+      this.loadDots();
       this.$notify({
-        group: 'error',
-        title: 'Error',
-        text: errorText,
-        type: 'error'
+        group: 'success',
+        title: 'Удаление точек',
+        text: 'Успешно',
+        type: 'success'
+      });
+    }).catch(() => {
+      this.AxiosErrorHandler("Точки не удалось удалить");
+    });
+  }
+,
+  logout()
+  {
+    this.$notify({
+      group: 'success',
+      title: 'Выход из аккаунта',
+      text: 'Успешно',
+      type: 'success'
+    });
+    this.$router.push({name: "auth-page"}, () => localStorage.clear());
+  }
+,
+
+  // Загрузка и прорисовка точек на графике
+  loadDots()
+  {
+    this.$axios.get("http://localhost:8890/api/point", {
+      headers: {Authorization: "Bearer " + localStorage.getItem("jwt")}
+    }).then(response => {
+      this.dots = response.data;
+      this.drawDots();
+    }).catch(() => {
+      this.AxiosErrorHandler("Точки не удалось загрузить");
+    });
+  }
+,
+  drawDots()
+  {
+    let r;
+    if (this.rVal.length === 1) r = this.rVal[0]*2.5;
+    else r = 2*2.5;
+    let svg = document.getElementById("graph")
+    let oldDots = document.querySelectorAll("circle");
+    oldDots.forEach(oldDot => oldDot.parentNode.removeChild(oldDot));
+
+    if (this.dots.length !== 0) {
+      this.dots.forEach(dot => {
+        let newDot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        newDot.setAttribute("id", "target-dot");
+        newDot.setAttribute("r", "4.5");
+        if (r >= 0) {
+          newDot.setAttribute("cx", `${dot.x / dot.r / dot.r * r * 100 + 150}`);
+          newDot.setAttribute("cy", `${150 - dot.y / dot.r / dot.r * r * 100}`);
+          newDot.setAttribute("fill", dot.result === true ? "green" : "red");
+        } else {
+          newDot.setAttribute("cx", `${(-1.8 * dot.x) / dot.r / dot.r * r * 100 + 150}`);
+          newDot.setAttribute("cy", `${150 - (-1.8 * dot.y) / dot.r / dot.r * r * 100}`);
+          newDot.setAttribute("fill", dot.result === true ? "green" : "red");
+        }
+        svg.appendChild(newDot);
       })
     }
-  },
-  mounted() {
-    this.loadDots();
-    this.drawDots();
   }
+,
+
+  // Различные виды валидации
+  validateForm()
+  {
+    if ((this.y >= -3 && this.y <= 3) &&
+        (!isNaN(this.xVal) && !isNaN(this.y) && !isNaN(this.rVal) && this.xVal.length > 0 && this.rVal.length > 0) &&
+        (this.y.trim() !== '')) {
+      let list = [];
+      // $.each(this.xVal,function (x) {
+      //   $.each(this.rVal,function (r){
+      //     list.push({x: x, y: this.y, r: r})
+      //   })
+      // })
+      this.xVal.forEach(x => this.rVal.forEach(r => list.push({x: x, y: this.y, r: r})))
+      this.addDots(list);
+    } else {
+      this.AxiosErrorHandler("Проверте введенные данные");
+    }
+  }
+,
+
+  valY()
+  {
+    document.querySelector('input[class="y"]').change(function () {
+      document.getElementById("input-y").value = document.getElementsByClassName("y").value
+      console.log(document.getElementsByClassName("y").value)
+      console.log(document.getElementById("input-y").value)
+    });
+  }
+,
+  validateFromGraph()
+  {
+    let position = getMousePosition(document.getElementById("graph"), event);
+    // let r;
+    // if (this.rVal.length === 1) r = val[0]*2.5;
+    // else r = 2*2.5;
+    // this.xGraph = ((position.x - 150) / 100 * r).toFixed(2);
+    // this.yGraph = ((150 - position.y) / 100 * r).toFixed(2);
+    // if (this.r >= -3 && this.r <= 5) {
+    //   this.addDots(this.xGraph, this.yGraph);
+    // } else {
+    //   this.AxiosErrorHandler("Проверьте значение R");
+    // }
+    let list =[];
+    // $.each(this.rVal,function (r){
+    //   let xGraph = ((position.x - 150) / 100 * r*2.5).toFixed(2);
+    //   let yGraph = ((150 - position.y) / 100 * r*2.5).toFixed(2);
+    //   list.push({x: xGraph, y: yGraph, r: r})
+    // })
+    if(this.rVal.length > 0) {
+      this.rVal.forEach(r => {
+        let xGraph = ((position.x - 150) / 100 * r * 2.5).toFixed(2);
+        let yGraph = ((150 - position.y) / 100 * r * 2.5).toFixed(2);
+        list.push({x: xGraph, y: yGraph, r: r})
+      });
+      console.log(list);
+      this.addDots(list);
+    }else {
+        this.AxiosErrorHandler("Проверьте значение R");
+      }
+
+    function getMousePosition(element, event) {
+      let rect = element.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      };
+    }
+  }
+,
+  validateInput(firstNumber, secondNumber, className, val)
+  {
+    let element = document.getElementById(className);
+    let buttonSubmit = document.getElementById("submit-button")
+    if (parseFloat(val) < firstNumber || parseFloat(val) > secondNumber || isNaN(val)) {
+      element.classList.add("red");
+      element.setAttribute("style", "color: red");
+      buttonSubmit.setAttribute("disabled", "true");
+      console.log(buttonSubmit)
+      return false;
+    } else {
+      element.classList.remove("red");
+      element.removeAttribute("style");
+      buttonSubmit.removeAttribute("disabled");
+      return true;
+    }
+  }
+,
+
+
+  // Вывод сообщений ошибок
+  AxiosErrorHandler(errorText)
+  {
+    this.$notify({
+      group: 'error',
+      title: 'Error',
+      text: errorText,
+      type: 'error'
+    })
+  }
+}
+,
+mounted()
+{
+  this.loadDots();
+  this.drawDots();
+}
 }
 </script>
 
 <style scoped>
-.container{
+.container {
   margin: 30px auto auto;
   background-color: whitesmoke;
   padding: 20px;
@@ -327,7 +473,7 @@ export default {
 /*
     Отвечает за график (левая часть контейнера)
 */
-.svg-wrapper{
+.svg-wrapper {
   background-color: white;
   border: 2px solid aqua;
   box-shadow: 0 0 5px 0 aqua;
@@ -339,25 +485,25 @@ export default {
 /*
     Ввод данных (Правая часть)
 */
-.inputs{
+.inputs {
   background-color: red;
   padding: 1px 50px 15px 50px;
   border-radius: 5%;
 }
 
-.text-center{
+.text-center {
   margin: auto 30px;
   display: inline-block;
 }
 
-.text-input{
+.text-input {
   text-align: center;
 }
 
 /*
     Для кнопок отправки и очистки таблицы
 */
-.special-button button{
+.special-button button {
   color: black;
   margin: 20px 5px 0;
   letter-spacing: 1px;
@@ -368,7 +514,7 @@ export default {
   border-radius: 6px;
 }
 
-.special-button button:hover{
+.special-button button:hover {
   color: black;
   transition: 0.5s;
   border: 2px solid red;
@@ -379,7 +525,7 @@ export default {
     Формат таблицы на планшетах/компьютерах
  */
 
-@media(min-width: 868px) {
+@media (min-width: 868px) {
   .table-check {
     color: greenyellow;
     margin: 20px auto 0;
@@ -416,7 +562,7 @@ export default {
     Формат таблицы на телефонах
  */
 
-@media(max-width: 868px) {
+@media (max-width: 868px) {
   .table-check {
     color: darkolivegreen;
     margin: 20px auto 0;
@@ -449,7 +595,7 @@ export default {
   }
 }
 
-.red{
+.red {
   border: 2px solid red;
 }
 </style>

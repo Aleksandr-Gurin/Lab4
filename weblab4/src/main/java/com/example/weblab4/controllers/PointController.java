@@ -3,6 +3,7 @@ package com.example.weblab4.controllers;
 
 import com.example.weblab4.model.Point;
 import com.example.weblab4.model.User;
+import com.example.weblab4.requests.ListDTO;
 import com.example.weblab4.requests.PointDTO;
 import com.example.weblab4.services.PointService;
 import com.example.weblab4.services.UserService;
@@ -19,6 +20,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -38,11 +40,16 @@ public class PointController {
 
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<String> addPoint(@Valid @RequestBody PointDTO data, HttpServletRequest req){
+    private ResponseEntity<String> addPoint(@Valid @RequestBody ListDTO data, HttpServletRequest req){
         User user = userService.findByLogin(jwtUtil.getUsername(jwtUtil.resolveToken(req)));
-        Point point = shittyMethod(data);
-        point.setLogin(user.getLogin());
-        pointService.addPoint(point);
+        List<Point> point = data.getPoints().stream()
+                .map(this::shittyMethod)
+                .collect(Collectors.toList());
+        point.forEach(p ->
+        {
+            p.setLogin(user.getLogin());
+            pointService.addPoint(p);
+        });
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -62,9 +69,9 @@ public class PointController {
 
 
     private Point shittyMethod(PointDTO p){
-        @NotNull @Min(value = -5) @Max(value = 3)double x = Double.parseDouble(p.getX());
-        @NotNull @Min(value = -5) @Max(value = 3)double y = Double.parseDouble(p.getY());
-        @NotNull @Min(value = -5) @Max(value = 3)double r = Double.parseDouble(p.getR());
+        @NotNull @Min(value = -4) @Max(value = 4)double x = Double.parseDouble(p.getX());
+        @NotNull @Min(value = -3) @Max(value = 3)double y = Double.parseDouble(p.getY());
+        @NotNull @Min(value = -2) @Max(value = 2)double r = Double.parseDouble(p.getR());
         return new Point(x, y, r);
     }
 
