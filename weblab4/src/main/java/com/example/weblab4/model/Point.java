@@ -66,11 +66,11 @@ public class Point implements Serializable{
     }
 
     private void checkResult(double x, double y, double r){
-        this.result = positiveRadius(x, y, r);
+        this.result = checkRadius(x, y, r);
 
     }
 
-    private boolean positiveRadius(double x, double y, double r){
+    private boolean checkRadius(double x, double y, double r){
         if (r<0){
             return (  (x >= 0 && y >= 0 && x<=-r && y<=-r/2)// 3 Четверть
                     || (x <= 0 && y <= 0 && x*x+y*y <= r*r)// 3 Четверть
@@ -84,22 +84,6 @@ public class Point implements Serializable{
             );
         }
 
-    }
-
-//    x*x + y*y <= r*r/4    x >= -r/2 && y <= r && y >= -r && x >= -r
-
-
-    private boolean negativeRadius(double x, double y, double r){
-        double r1 = Math.abs(r);
-        double x1 = -x;
-        double y1 = -y;
-        return
-                ((  (x1 <= 0 && y1 >= 0 && x1 >= -r1 && y1 <= r1/2 && y1<=x1/2 + r1/2)// 2 Четверть
-                || (x1 <= 0 && y1 <= 0 && x1*x1 + y1*y1 <= r1*r1/4)// 3 Четверть
-                || (x1 >= 0 && y1 <= 0 && y1 >= -r1 && x1<= r1/2))// 4 Четверть
-              )
-                &&
-                (r < 0 && r >= -3);
     }
 
 }
