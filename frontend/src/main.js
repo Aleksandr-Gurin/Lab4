@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from "@/router";
+import router from "./router.js";
 import Notifications from 'vue-notification';
 import Axios from "axios";
 

@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Registration from "@/views/Registration";
-import Main from "@/views/Main";
-import NotFoundError from "@/views/Error";
+import Registration from "./views/Registration.vue";
+import Main from "./views/Main.vue";
+import NotFoundError from "./views/Error.vue";
 
 Vue.use(VueRouter);
 

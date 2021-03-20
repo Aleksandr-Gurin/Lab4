@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import Header from "@/components/Header";
-import Loader from "@/components/Loader";
+import Header from "./components/Header.vue";
+import Loader from "./components/Loader.vue";
 
 export default {
   name: 'App',

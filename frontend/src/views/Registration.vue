@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import Button from "@/components/Button";
+import Button from "../components/Button.vue";
 
 export default {
   name: "Registration",
@@ -45,7 +45,7 @@ export default {
     logIn(e){
       e.preventDefault()
       this.$router.push({name: 'app-page'});
-      this.$axios.post('http://localhost:8890/api/user', {
+      this.$axios.post('http://localhost:20281/api/user', {
         login: this.login,
         password: this.password
       }).then(response => {
@@ -57,7 +57,7 @@ export default {
     },
     register(e){
       e.preventDefault();
-      this.$axios.put('http://localhost:8890/api/user', {
+      this.$axios.put('http://localhost:20281/api/user', {
         login: this.login,
         password: this.password
       }).then(() => {

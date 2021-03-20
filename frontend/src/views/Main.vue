@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import Button from "@/components/Button";
+import Button from "../components/Button.vue";
 
 export default {
   name: "Main",
@@ -261,7 +261,7 @@ methods: {
   // Взаимодействие с формой и графиком
   addDots(points)
   {
-    this.$axios.put("http://localhost:8890/api/point",
+    this.$axios.put("http://localhost:20281/api/point",
         {points: points},
         {
           headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")}
@@ -282,7 +282,7 @@ methods: {
 
   deleteDots()
   {
-    this.$axios.delete("http://localhost:8890/api/point",
+    this.$axios.delete("http://localhost:20281/api/point",
         {
           headers: {Authorization: "Bearer " + localStorage.getItem("jwt")}
         }).then(() => {
@@ -313,7 +313,7 @@ methods: {
   // Загрузка и прорисовка точек на графике
   loadDots()
   {
-    this.$axios.get("http://localhost:8890/api/point", {
+    this.$axios.get("http://localhost:20281/api/point", {
       headers: {Authorization: "Bearer " + localStorage.getItem("jwt")}
     }).then(response => {
       this.dots = response.data;
@@ -533,7 +533,7 @@ mounted()
     Формат таблицы на планшетах/компьютерах
  */
 
-@media (min-width: 868px) {
+@media (min-width: 664px) {
   .table-check {
     color: greenyellow;
     margin: 20px auto 0;
@@ -570,7 +570,7 @@ mounted()
     Формат таблицы на телефонах
  */
 
-@media (max-width: 868px) {
+@media (max-width: 664px) {
   .table-check {
     color: darkolivegreen;
     margin: 20px auto 0;
