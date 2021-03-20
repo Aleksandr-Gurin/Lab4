@@ -16,17 +16,17 @@ import static com.example.weblab4.model.Point.*;
 
 @Entity @Data
 @Table(name = "points")
-@NamedQueries({
-        @NamedQuery(name = FIND_BY_LOGIN, query = "SELECT p FROM Point p WHERE p.login = :login"),
-        @NamedQuery(name = FIND_ALL, query = "SELECT p FROM Point p"),
-        @NamedQuery(name = DELETE_ALL_BY_LOGIN, query = "DELETE FROM Point p WHERE p.login = :login")
-})
+//@NamedQueries({
+//        @NamedQuery(name = FIND_BY_LOGIN, query = "SELECT p FROM Point p WHERE p.login = :login"),
+//        @NamedQuery(name = FIND_ALL, query = "SELECT p FROM Point p"),
+//        @NamedQuery(name = DELETE_ALL_BY_LOGIN, query = "DELETE FROM Point p WHERE p.login = :login")
+//})
 public class Point implements Serializable{
 
 
-    public static final String FIND_ALL = "Point.findAll";
-    public static final String FIND_BY_LOGIN = "Point.findByLogin";
-    public static final String DELETE_ALL_BY_LOGIN = "Point.deleteAll";
+//    public static final String FIND_ALL = "Point.findAll";
+//    public static final String FIND_BY_LOGIN = "Point.findByLogin";
+//    public static final String DELETE_ALL_BY_LOGIN = "Point.deleteAll";
 
     @Id
     @Column(nullable = false, unique = true, name = "id")

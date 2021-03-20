@@ -20,7 +20,7 @@ import java.util.function.Function;
 @Component
 public class JWTUtil {
 
-    private final String KEY = "key";
+    private final String KEY = "deadinside";
     private static final long TOKEN_VALIDITY = 1800000; //30 min
     private final UserServiceDetails userDetails;
 
