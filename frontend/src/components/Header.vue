@@ -5,13 +5,13 @@
       </div>
       <div>
         <span>
-          <a target="_blank" v-bind:href="authorUrl">Цветков Фёдор</a>
+          <a target="_blank" v-bind:href="authorUrl">Гурин Александр</a>
           , P3232
         </span>
 
         <span>
           Вариант
-          <a target="_blank" v-bind:href="varUrl">282828</a>
+          <a target="_blank" v-bind:href="varUrl">2888</a>
         </span>
       </div>
   </header>

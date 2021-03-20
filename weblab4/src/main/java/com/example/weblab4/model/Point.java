@@ -45,11 +45,11 @@ public class Point implements Serializable{
     //Text [-5 ... 3] для координаты по оси Y,
     //Text [-3 ... 5] для задания радиуса области
 
-    @Column @NotNull @Min(value = -3) @Max(value = 5) private double x;
+    @Column @NotNull @Min(value = -4) @Max(value = 4) private double x;
 
-    @Column @NotNull @Min(value = -5) @Max(value = 3) private double y;
+    @Column @NotNull @Min(value = -4) @Max(value = 4) private double y;
 
-    @Column @NotNull @Min(value = -3) @Max(value = 5) private double r;
+    @Column @NotNull @Min(value = -2) @Max(value = 2) private double r;
 
     @Column(nullable = false)
     private boolean result;
@@ -66,15 +66,24 @@ public class Point implements Serializable{
     }
 
     private void checkResult(double x, double y, double r){
-        this.result = positiveRadius(x, y, r) || negativeRadius(x, y, r);
+        this.result = positiveRadius(x, y, r);
 
     }
 
     private boolean positiveRadius(double x, double y, double r){
-        return ((  (x >= 0 && y >= 0 && x<=r && y<=r)// 1 Четверть
-                || (x >= 0 && y <= 0 && x*x+y*y <= r*r/4)// 2 Четверть
-                || (x <= 0 && y <= 0 && x>=-y-r)// 4 Четверть
-              )) && (r >= 0 && r <= 5);
+        if (r<0){
+            return (  (x >= 0 && y >= 0 && x<=-r && y<=-r/2)// 3 Четверть
+                    || (x <= 0 && y <= 0 && x*x+y*y <= r*r)// 3 Четверть
+                    || (x >= 0 && y <= 0 && y>=x/2+r/2)// 2 Четверть
+            );
+        }else
+        {
+            return (  (x >= 0 && y >= 0 && x<=r && y<=r/2)// 1 Четверть
+                    || (x <= 0 && y <= 0 && x*x+y*y <= r*r)// 3 Четверть
+                    || (x >= 0 && y <= 0 && y>=x/2-r/2)// 2 Четверть
+            );
+        }
+
     }
 
 //    x*x + y*y <= r*r/4    x >= -r/2 && y <= r && y >= -r && x >= -r

@@ -27,13 +27,12 @@ export default {
     return {
       headerParams: {
         title: "Лабораторная работа №4",
-        authorName: "Цветков Фёдор",
-        authorUrl: "https://vk.com/id307377554"
+        authorName: "Гурин Александр",
+        authorUrl: "https://t.me/Aixoxs"
       },
       footerParams: {
         authorLogoPath: "/assets/img.png",
-        authorUrl: "https://github.com/FedorCV",
-
+        authorUrl: "https://github.com/Aleksandr-Gurin/",
       },
       loading: true
     }

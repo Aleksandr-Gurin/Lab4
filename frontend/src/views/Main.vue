@@ -67,28 +67,20 @@
             <!--              </label>-->
             <!--            </div>-->
             <div class="row">
-              <span class="row" v-for="rValue in rValues" :key="rValue.id">
+              <span class="row" v-for="rValue in rValues" :key="rValue.id" style="margin-right: 5px">
                 <label>{{ rValue.r }}</label>
                 <input type="checkbox" v-model="rVal" :value="rValue.r"/>
               </span>
 
-              <!--              <p>User's selected roels</p>-->
-              <!--              {{rVal}}-->
+<!--                            <p>User's selected roels</p>-->
+<!--                            {{rVal}}-->
             </div>
 
             <p>Выберите Х:</p>
-            <div class="row">
-              <label class="text-label">
-                <input id="input-x" class="text-input" type="text" name="x" placeholder="[-5; 3]" maxlength="14"
-                       v-model="x"/>
-              </label>
-            </div>
-
-            <p>Выберите Y:</p>
 <!--            <div class="row">-->
 <!--              <label class="text-label">-->
-<!--                <input id="input-y" class="text-input" type="text" name="y" placeholder="[-3; 5]" maxlength="14"-->
-<!--                       v-model="y"/>-->
+<!--                <input id="input-x" class="text-input" type="text" name="x" placeholder="[-5; 3]" maxlength="14"-->
+<!--                       v-model="x"/>-->
 <!--              </label>-->
 <!--            </div>-->
             <div class="row">
@@ -97,9 +89,18 @@
                 <input type="checkbox" v-model="xVal" :value="xValue.x"/>
               </span>
 
-              <!--              <p>User's selected roels</p>-->
-              <!--              {{xVal}}-->
+<!--                            <p>User's selected roels</p>-->
+<!--                            {{xVal}}-->
             </div>
+
+            <p>Выберите Y:</p>
+            <div class="row">
+              <label class="text-label">
+                <input id="input-y" class="text-input" type="text" name="y" placeholder="[-3; 5]" maxlength="14"
+                       v-model="y"/>
+              </label>
+            </div>
+
           </div>
           <div class="special-button">
             <button id="submit-button" @click="validateForm" type="submit">Отправить на проверку</button>
@@ -336,13 +337,20 @@ methods: {
         let newDot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         newDot.setAttribute("id", "target-dot");
         newDot.setAttribute("r", "4.5");
+        let dotR = dot.r * 2.5;
+        let dotX = dot.x * 2.5;
+        let dotY = dot.y * 2.5;
         if (r >= 0) {
-          newDot.setAttribute("cx", `${dot.x / dot.r / dot.r * r * 100 + 150}`);
-          newDot.setAttribute("cy", `${150 - dot.y / dot.r / dot.r * r * 100}`);
+          newDot.setAttribute("cx", `${dotX / dotR / dotR * r * 100 + 150}`);
+          newDot.setAttribute("cy", `${150 - dotY / dotR / dotR * r * 100}`);
           newDot.setAttribute("fill", dot.result === true ? "green" : "red");
         } else {
-          newDot.setAttribute("cx", `${(-1.8 * dot.x) / dot.r / dot.r * r * 100 + 150}`);
-          newDot.setAttribute("cy", `${150 - (-1.8 * dot.y) / dot.r / dot.r * r * 100}`);
+          // let x = dot.x * (-1);
+          // let y = dot.y * (-1);
+          newDot.setAttribute("cx", `${dotX / dotR / dotR * r * 100 + 150}`);
+          newDot.setAttribute("cy", `${150 - dotY / dotR / dotR * r * 100}`);
+          // newDot.setAttribute("cx", `${(-1.8 * dot.x) / dotR / dotR * r * 100 + 150}`);
+          // newDot.setAttribute("cy", `${150 - (-1.8 * dot.y) / dotR / dotR * r * 100}`);
           newDot.setAttribute("fill", dot.result === true ? "green" : "red");
         }
         svg.appendChild(newDot);
@@ -355,7 +363,7 @@ methods: {
   validateForm()
   {
     if ((this.y >= -3 && this.y <= 3) &&
-        (!isNaN(this.xVal) && !isNaN(this.y) && !isNaN(this.rVal) && this.xVal.length > 0 && this.rVal.length > 0) &&
+        (!isNaN(this.y) && this.xVal.length > 0 && this.rVal.length > 0) &&
         (this.y.trim() !== '')) {
       let list = [];
       // $.each(this.xVal,function (x) {
@@ -366,7 +374,7 @@ methods: {
       this.xVal.forEach(x => this.rVal.forEach(r => list.push({x: x, y: this.y, r: r})))
       this.addDots(list);
     } else {
-      this.AxiosErrorHandler("Проверте введенные данные");
+      this.AxiosErrorHandler("Проверьте введенные данные");
     }
   }
 ,
@@ -401,8 +409,8 @@ methods: {
     // })
     if(this.rVal.length > 0) {
       this.rVal.forEach(r => {
-        let xGraph = ((position.x - 150) / 100 * r * 2.5).toFixed(2);
-        let yGraph = ((150 - position.y) / 100 * r * 2.5).toFixed(2);
+        let xGraph = ((position.x - 150) / 100 * r).toFixed(2);
+        let yGraph = ((150 - position.y) / 100 * r).toFixed(2);
         list.push({x: xGraph, y: yGraph, r: r})
       });
       console.log(list);
